@@ -59,6 +59,16 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      - name: Cache Conan packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.conan
+            ${{ github.workspace }}/.conan
+          key: conan-${{ matrix.config.os }}-${{ hashFiles('**/conanfile.txt', '**/conanfile.py', '**/conan.lock') }}
+          restore-keys: |
+            conan-${{ matrix.config.os }}-
+
       - name: Bootstrap
         uses: ./.github/bootstrap_platform
 
